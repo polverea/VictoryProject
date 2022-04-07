@@ -2,6 +2,18 @@
   height: 60vh;
   width: 500px;
   background-color: black;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+  grid-gap: 1px;
+}
+
+.item {
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  background-color: red;
 }
 
 .container {
