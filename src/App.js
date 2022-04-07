@@ -3,7 +3,10 @@ import './App.css';
 function App() {
   return (
       <div className='container'>
-        <div className='board'></div>
+        <div className='board'>
+           <div className='item'></div>
+        </div>
+       
       </div>
   )
 }
