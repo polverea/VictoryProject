@@ -1,0 +1,9 @@
+.right-panel {
+  width: 400px;
+  background-color: aquamarine;
+  height: 90vh;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  padding-left: 20px;
+}

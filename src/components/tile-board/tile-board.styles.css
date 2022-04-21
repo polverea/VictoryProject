@@ -1,0 +1,9 @@
+.tile-board {
+  height: 90vh;
+  width: 500px;
+  background-color: rgba(245, 245, 245);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+  grid-gap: 1px;
+}
