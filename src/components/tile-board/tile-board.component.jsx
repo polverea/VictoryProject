@@ -1,4 +1,5 @@
 import React from "react";
+import { useBoard } from "../../hooks/useBoard";
 import "./tile-board.styles.css";
 
 export function TileBoard({ board }) {
