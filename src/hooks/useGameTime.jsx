@@ -5,6 +5,7 @@ export function useGameTime({ onTick: handleTick, speed }) {
   const [isRunning, setIsRunning] = useState(false);
 
   const startTime = useCallback(() => {
+    console.log("start");
     timeInterval.current = setInterval(() => {
       handleTick();
     }, speed);
@@ -12,6 +13,7 @@ export function useGameTime({ onTick: handleTick, speed }) {
   }, [handleTick, speed]);
 
   const stopTime = useCallback(() => {
+    console.log("Stop");
     clearInterval(timeInterval.current);
     timeInterval.current = null;
     setIsRunning(false);
