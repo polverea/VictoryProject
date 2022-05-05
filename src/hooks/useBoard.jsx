@@ -1,49 +1,37 @@
 import { useState, useEffect, useRef } from "react";
 import { randomTetrominos } from "../tetrominos";
 import { getEmptyBoard } from "../utils/utils";
+import { Player } from "../Classes/Player";
 
 export const useBoard = () => {
   const [board, setBoard] = useState(getEmptyBoard);
-  const player = useRef({
-    currentPosition: { row: -1, column: 5 },
-    tetrominoCoordinates: randomTetrominos(),
-  });
+  const player = useRef(new Player());
 
   useEffect(() => {
     updateBoard(board);
   }, []);
 
-  const updatePosition = () => {
-    player.current = {
-      currentPosition: {
-        row: player.current.currentPosition.row + 1,
-        column: player.current.currentPosition.column,
-      },
-      tetrominoCoordinates: player.current.tetrominoCoordinates,
-    };
-  };
   const updateBoard = () => {
-    updatePosition();
-    player.current.tetrominoCoordinates.shape.forEach((row, rowIdx) => {
-      row.forEach((val, colIdx) => {
-        const row = player.current.currentPosition.row + rowIdx;
-        const column = player.current.currentPosition.column + colIdx;
-        if (row > 0) {
-          board[row - 1][column] = null;
-        }
-      });
-    });
+    //sterge
+    player.current.deletePosition(board);
+    //face update in jos
+    player.current.updatePosition(board);
 
-    player.current.tetrominoCoordinates.shape.forEach((row, rowIdx) => {
-      row.forEach((val, colIdx) => {
-        const row = player.current.currentPosition.row + rowIdx;
-        const column = player.current.currentPosition.column + colIdx;
-        if (val === true)
-          board[row][column] = player.current.tetrominoCoordinates.color;
-      });
-    });
-
+    let shouldBeUpdated = player.current.checkCollision(board);
+    //verifica daca exista o coliziune
+    if (!shouldBeUpdated) {
+      //face update in sus
+      player.current.updatePosition(board);
+    }
+    // deseneaza
+    player.current.draw(board);
+    //nu sunt coliziuni => tetromino nou
+    if (!shouldBeUpdated) {
+      player.current = new Player();
+    }
+    // player.current.listener(board);
     setBoard([...board]);
   };
+
   return [updateBoard, board];
 };
