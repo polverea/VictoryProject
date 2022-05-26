@@ -1,4 +1,4 @@
-import { randomTetrominos } from "../tetrominos";
+import { DIRECTION, randomTetrominos } from "../tetrominos";
 
 export class Player {
   constructor(row = 0, column = 5) {
@@ -21,14 +21,13 @@ export class Player {
     });
   }
 
-  updatePosition(board) {
-    let shouldBeUpdated = this.checkCollision(board);
-    if (shouldBeUpdated) this.currentPosition.row += 1;
-    else this.currentPosition.row -= 1;
+  updatePosition(direction) {
+    if (direction === DIRECTION.down) this.currentPosition.row += 1;
+    if (direction === DIRECTION.up) this.currentPosition.row -= 1;
   }
 
   checkCollision(board) {
-    let shouldBeUpdated = true;
+    let collided = false;
     this.iterate((row, column) => {
       if (
         row < 0 ||
@@ -37,10 +36,10 @@ export class Player {
         column > 11 ||
         board[row][column] !== null
       ) {
-        shouldBeUpdated = false;
+        collided = true;
       }
     });
-    return shouldBeUpdated;
+    return collided;
   }
 
   deletePosition(board) {
@@ -52,26 +51,4 @@ export class Player {
       (row, column) => (board[row][column] = this.tetrominoCoordinates.color)
     );
   }
-
-  // listener(board) {
-  //   document.addEventListener(
-  //     "keyup",
-  //     (event) => {
-  //       var name = event.key;
-  //       const shouldBeUpdated = this.checkCollision(board);
-  //       if (name === "a") {
-  //         this.deletePosition(board);
-  //         this.currentPosition.column -= 1;
-  //         this.draw(board);
-  //         console.log("a", shouldBeUpdated);
-  //       } else if (name === "d") {
-  //         this.deletePosition(board);
-  //         this.currentPosition.column += 1;
-  //         this.draw(board);
-  //         console.log("d", shouldBeUpdated);
-  //       }
-  //     },
-  //     false
-  //   );
-  // }
 }

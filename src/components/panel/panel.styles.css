@@ -1,6 +1,5 @@
 .right-panel {
-  width: 400px;
-  background-color: aquamarine;
+  width: auto;
   height: 90vh;
   display: flex;
   align-items: flex-start;

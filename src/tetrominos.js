@@ -6,7 +6,10 @@ piesa l
   | 1 | 0 |
   | 1 | 1 |
 */
-
+export const DIRECTION = {
+  up: "up",
+  down: "down",
+};
 export const TETROMINOS = {
   O: {
     shape: [
