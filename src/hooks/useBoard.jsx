@@ -7,17 +7,17 @@ import { DIRECTION } from "../tetrominos";
 export const useBoard = () => {
   const [board, setBoard] = useState(getEmptyBoard);
   const player = useRef(new Player());
-  const score = useRef(0);
+  const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
 
   const initializePlayer = () => {
     if (gameOver) {
       const freshBoard = getEmptyBoard();
-
       player.current = new Player();
       player.current.draw(freshBoard);
       setBoard([...freshBoard]);
       setGameOver(false);
+      setScore(0);
     }
   };
 
@@ -46,7 +46,17 @@ export const useBoard = () => {
         }
         player.current.draw(board);
         console.log("d", collided);
+      } else if (name === "s") {
+        player.current.deletePosition(board);
+        player.current.currentPosition.row += 1;
+        const collided = player.current.checkCollision(board);
+        if (collided) {
+          player.current.currentPosition.row -= 1;
+        }
+        player.current.draw(board);
+        console.log("s", collided);
       }
+      setBoard([...board]);
     };
     document.addEventListener("keydown", listener);
     return () => {
@@ -69,7 +79,7 @@ export const useBoard = () => {
     if (collided && player.current.currentPosition.row == 0) {
       player.current.draw(board);
       setGameOver(true);
-      alert("Game Over! Score: ", score);
+      alert("Game Over!");
       return;
     }
     // deseneaza
@@ -87,7 +97,7 @@ export const useBoard = () => {
         }
         if (isLineComplete) {
           linesToErase.push(i);
-          score.current += 1;
+          setScore((prev) => prev + 1);
         }
       }
       eraseLines(linesToErase, board);
@@ -113,7 +123,7 @@ export const useBoard = () => {
 
   function eraseLines(linesToErase, board) {
     for (let i = 0; i < linesToErase.length; i++) {
-      let lineIndex = linesToErase[i] - i;
+      let lineIndex = linesToErase[i];
       for (let m = lineIndex; m > 0; m--) {
         for (let n = 0; n < 12; n++) {
           board[m][n] = board[m - 1][n];

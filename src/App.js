@@ -15,14 +15,20 @@ function App() {
   const onTick = useCallback(() => {
     console.log("tic");
     updateBoard();
-  }, [board]);
+  }, [gameOver]);
+
   const { startTime, stopTime, isRunning } = useGameTime({ onTick, speed });
 
   useEffect(() => {
     if (gameOver && isRunning) {
       stopTime();
+      setSpeed(1000);
     }
   }, [gameOver]);
+
+  useEffect(() => {
+    setSpeed((prev) => prev * 0.9);
+  }, [score]);
 
   return (
     <div>
@@ -34,12 +40,12 @@ function App() {
         </Row>
         <Row>
           <h2>
-            <Badge bg="primary">Score:{score.current}</Badge>{" "}
+            <Badge bg="primary">Score:{score}</Badge>{" "}
           </h2>
         </Row>
       </Container>
 
-      <Container className="p-3 mb-3">
+      <Container className="p-3 mb-2">
         <TileBoard board={board} />
         <div className="board"></div>
 
