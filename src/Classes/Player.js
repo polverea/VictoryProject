@@ -47,8 +47,10 @@ export class Player {
   }
 
   draw(board) {
-    this.iterate(
-      (row, column) => (board[row][column] = this.tetrominoCoordinates.color)
-    );
+    if (!this.checkCollision(board)) {
+      this.iterate(
+        (row, column) => (board[row][column] = this.tetrominoCoordinates.color)
+      );
+    }
   }
 }
