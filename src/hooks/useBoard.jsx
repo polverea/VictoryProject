@@ -7,6 +7,19 @@ import { DIRECTION } from "../tetrominos";
 export const useBoard = () => {
   const [board, setBoard] = useState(getEmptyBoard);
   const player = useRef(new Player());
+  const score = useRef(0);
+  const [gameOver, setGameOver] = useState(true);
+
+  const initializePlayer = () => {
+    if (gameOver) {
+      const freshBoard = getEmptyBoard();
+
+      player.current = new Player();
+      player.current.draw(freshBoard);
+      setBoard([...freshBoard]);
+      setGameOver(false);
+    }
+  };
 
   useEffect(() => {
     updateBoard(board);
@@ -53,6 +66,12 @@ export const useBoard = () => {
       //face update in sus
       player.current.updatePosition(DIRECTION.up);
     }
+    if (collided && player.current.currentPosition.row == 0) {
+      player.current.draw(board);
+      setGameOver(true);
+      alert("Game Over! Score: ", score);
+      return;
+    }
     // deseneaza
     player.current.draw(board);
     //nu sunt coliziuni => tetromino nou
@@ -68,6 +87,7 @@ export const useBoard = () => {
         }
         if (isLineComplete) {
           linesToErase.push(i);
+          score.current += 1;
         }
       }
       eraseLines(linesToErase, board);
@@ -119,5 +139,5 @@ export const useBoard = () => {
     }
   };
 
-  return [updateBoard, board, rotateLeft];
+  return [updateBoard, board, rotateLeft, initializePlayer, gameOver, score];
 };
