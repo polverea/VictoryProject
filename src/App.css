@@ -1,6 +1,5 @@
 body {
-  background-color: red;
-  background-color: #e2c2a7;
+  background-color: #e2c2a7 !important;
 }
 .container {
   display: flex;
